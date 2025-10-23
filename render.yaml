@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: mnps-v2-api
+    env: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./mnps_v2.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: PORT
+        value: 8000
+
+  - type: web
+    name: mnps-v2-admin
+    env: docker
+    plan: free
+    dockerfilePath: ./web-admin/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://mnps-v2-api.onrender.com
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+
+  - type: web
+    name: mnps-v2-portal
+    env: docker
+    plan: free
+    dockerfilePath: ./student-portal/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://mnps-v2-api.onrender.com
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
